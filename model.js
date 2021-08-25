@@ -13,7 +13,7 @@ const postSchema = new mongoose.Scheme({
 	titlesec: {
 		type: String,
 		required: true
-	}
+	},
 	description: {
 		type: String
 	},
