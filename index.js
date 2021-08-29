@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const Post = require('./model');
-const postRouter = require('./routes/articles') ;
+const Article = require('./models/article');
+const articleRouter = require('./routes/articles') ;
 const app = express()
 
 
@@ -19,7 +19,7 @@ app.use(express.urlencoded({
 app.use(methodOverride('_method'))
 
 app.get('/', async(req, res) => {
-	const articles = await Post.find().sort({
+	const articles = await Article.find().sort({
 		createdAt: 'desc'
 	})
 	res.render('articles/index', {

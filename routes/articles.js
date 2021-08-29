@@ -1,31 +1,31 @@
 const express = require('express')
-const Post = require('./../model')
+const Article = require('./../models/article')
 const router = express.Router()
 
 router.get('./new', (req, res) => {
 	res.render('articles/new', {
-		article: new Post()
+		article: new Article()
 	})
 })
 
 router.get('/edit/:id', async(req, res) => {
-	const article = await Post.findById(req.params.id)
+	const article = await Article.findById(req.params.id)
 	res.render('articles/edit',{article: article})
 })
 
 router.get('/:slug', async(req, res) => {
-	const article = await Post.findOne({ slug: req.params.slug})
+	const article = await Article.findOne({ slug: req.params.slug})
 	if(article == null) res.redirect('/')
 	res.render('articles/show', {article: article})
 })
 
 router.post('/', async(req, res, next) => {
-	req.article = new Post()
+	req.article = new Article()
 	next()
 }, saveArticleAndRedirect('new'))
 
 router.put('/:id', async(req, res, next) => {
-	req.article = await Post.findById(req.params.id)
+	req.article = await Article.findById(req.params.id)
 	next()
 }, saveArticleAndRedirect('edit'))
 
@@ -34,7 +34,6 @@ function saveArticleAndRedirect(path){
 	return async(req, res) => {
 		let article = req.article
 		article.title = req.body.title
-		article.titlesecond = req.body.titlesecond
 		article.description = req.body.description
 		article.markdown = req.body.markdown
 		try{
